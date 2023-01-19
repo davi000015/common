@@ -254,6 +254,7 @@ func (jc *JobController) ReconcileJobs(
 		return jc.Controller.UpdateJobStatusInApiServer(job, &jobStatus)
 	} else {
 		// General cases which need to reconcile
+		log.Infof("Job %s gang scheduling: %d", jobName, jc.Config.EnableGangScheduling)
 		if jc.Config.EnableGangScheduling {
 			minMember := totalReplicas
 			queue := ""
@@ -325,7 +326,7 @@ func (jc *JobController) ReconcileJobs(
 }
 
 // ResetExpectations reset the expectation for creates and deletes of pod/service to zero.
-func (jc *JobController) ResetExpectations(jobKey string, replicas map[apiv1.ReplicaType]*apiv1.ReplicaSpec)  {
+func (jc *JobController) ResetExpectations(jobKey string, replicas map[apiv1.ReplicaType]*apiv1.ReplicaSpec) {
 	for rtype := range replicas {
 		rt := strings.ToLower(string(rtype))
 		expectationPodsKey := expectation.GenExpectationPodsKey(jobKey, rt)

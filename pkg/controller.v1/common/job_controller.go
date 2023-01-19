@@ -217,6 +217,7 @@ func (jc *JobController) GenLabels(jobName string) map[string]string {
 }
 
 func (jc *JobController) SyncPodGroup(job metav1.Object, pgSpec v1beta1.PodGroupSpec) (*v1beta1.PodGroup, error) {
+	log.Infof("Syncing pod group %s", job.GetName())
 
 	volcanoClientSet := jc.VolcanoClientSet
 	// Check whether podGroup exists or not
